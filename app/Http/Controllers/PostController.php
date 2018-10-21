@@ -18,6 +18,10 @@ class PostController extends Controller
 
     public function getAdminIndex()
     {
+        if( !Auth::check()){
+            return redirect()->back();
+        }
+        
         $posts = Post::orderBy('title', 'asc')->get();
         return view('admin.index', ['posts' => $posts]);
     }
@@ -44,6 +48,10 @@ class PostController extends Controller
 
     public function getAdminEdit($id)
     {
+        if( !Auth::check()){
+            return redirect()->back();
+        }
+
         $post = Post::find($id);
         $tags = Tag::all();
         return view('admin.edit', ['post' => $post, 'postId' => $id, 'tags' => $tags]);
@@ -51,6 +59,10 @@ class PostController extends Controller
 
     public function postAdminCreate(Request $request)
     {
+        if( !Auth::check()){
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'title' => 'required|min:5',
             'content' => 'required|min:10'
@@ -73,6 +85,10 @@ class PostController extends Controller
 
     public function postAdminUpdate(Request $request)
     {
+        if( !Auth::check()){
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'title' => 'required|min:5',
             'content' => 'required|min:10'
@@ -89,6 +105,10 @@ class PostController extends Controller
 
     public function getAdminDelete($id)
     {
+        if( !Auth::check()){
+            return redirect()->back();
+        }
+
         $post = Post::find($id);
         $post->likes()->delete();
         $post->tags()->detach();
